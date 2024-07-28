@@ -20,9 +20,13 @@ const chatSchema = new mongoose_1.default.Schema({
     }
 });
 const userSchema = new mongoose_1.default.Schema({
-    name: {
+    firstName: {
         type: String,
         required: true
+    },
+    lastName: {
+        type: String,
+        required: false
     },
     email: {
         type: String,
