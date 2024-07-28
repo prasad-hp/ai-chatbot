@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user"
 import bcrypt from "bcrypt"
-import { signupSchema } from "../utils/validators";
+import { loginSchema, signupSchema } from "../utils/validators";
 
 export const getAllUsers = async (
     req: Request,
@@ -15,7 +15,6 @@ export const getAllUsers = async (
         console.log(error)
     }
 }
-
 export const signUpUser = async (
     req: Request,
     res: Response,
@@ -40,6 +39,29 @@ export const signUpUser = async (
             password:hashedPassword
         })
         res.status(201).json({message: "User Created Successfully"})
+    } catch (error) {
+        console.error(error, "An Error Occured")
+    }
+}
+
+export const loginUser = async(
+    req : Request,
+    res : Response
+)=>{
+    try {
+        const loginData = loginSchema.safeParse(req.body)
+        if(!loginData.success){
+            return res.status(400).json({message: loginData.error})
+        }
+        const user = await User.findOne({
+            email:loginData.data.email
+        })
+        if(!user){
+            return res.status(400).json({message:"User doesn't exist"})
+        }
+        const checkPassword = bcrypt.compareSync(loginData.data.password, user.password)
+        console.log(checkPassword)
+        res.status(200).json({message:"Logged In"})
     } catch (error) {
         console.error(error, "An Error Occured")
     }

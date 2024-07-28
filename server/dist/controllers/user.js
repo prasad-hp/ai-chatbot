@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signUpUser = exports.getAllUsers = void 0;
+exports.loginUser = exports.signUpUser = exports.getAllUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const validators_1 = require("../utils/validators");
@@ -53,3 +53,24 @@ const signUpUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.signUpUser = signUpUser;
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const loginData = validators_1.loginSchema.safeParse(req.body);
+        if (!loginData.success) {
+            return res.status(400).json({ message: loginData.error });
+        }
+        const user = yield user_1.default.findOne({
+            email: loginData.data.email
+        });
+        if (!user) {
+            return res.status(400).json({ message: "User doesn't exist" });
+        }
+        const checkPassword = bcrypt_1.default.compareSync(loginData.data.password, user.password);
+        console.log(checkPassword);
+        res.status(200).json({ message: "Logged In" });
+    }
+    catch (error) {
+        console.error(error, "An Error Occured");
+    }
+});
+exports.loginUser = loginUser;
