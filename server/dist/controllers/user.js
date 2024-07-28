@@ -16,6 +16,8 @@ exports.loginUser = exports.signUpUser = exports.getAllUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const validators_1 = require("../utils/validators");
+const token_manager_1 = require("../utils/token-manager");
+const constants_1 = require("../utils/constants");
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield user_1.default.find();
@@ -40,11 +42,31 @@ const signUpUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         const salt = bcrypt_1.default.genSaltSync(10);
         const hashedPassword = yield bcrypt_1.default.hash(signupData.data.password, salt);
-        yield user_1.default.create({
+        const createUser = yield user_1.default.create({
             firstName: signupData.data.firstName,
             lastName: signupData.data.lastName,
             email: signupData.data.email,
             password: hashedPassword
+        });
+        if (!createUser) {
+            return res.status(500).json({ message: "An error Occured, please try again" });
+        }
+        console.log(createUser);
+        res.clearCookie(constants_1.COOKIE_NAME, {
+            path: "/",
+            domain: "localhost",
+            httpOnly: true,
+            signed: true
+        });
+        const token = (0, token_manager_1.createToken)(createUser.id, createUser.email, "7d");
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7);
+        res.cookie(constants_1.COOKIE_NAME, token, {
+            path: "/",
+            domain: "localhost",
+            expires,
+            httpOnly: true,
+            signed: true
         });
         res.status(201).json({ message: "User Created Successfully" });
     }
@@ -66,7 +88,25 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json({ message: "User doesn't exist" });
         }
         const checkPassword = bcrypt_1.default.compareSync(loginData.data.password, user.password);
-        console.log(checkPassword);
+        if (!checkPassword) {
+            return res.status(400).json({ message: "Enter valid Password" });
+        }
+        res.clearCookie(constants_1.COOKIE_NAME, {
+            path: "/",
+            domain: "localhost",
+            httpOnly: true,
+            signed: true
+        });
+        const token = (0, token_manager_1.createToken)(user.id, user.email, "7d");
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7);
+        res.cookie(constants_1.COOKIE_NAME, token, {
+            path: "/",
+            domain: "localhost",
+            expires,
+            httpOnly: true,
+            signed: true
+        });
         res.status(200).json({ message: "Logged In" });
     }
     catch (error) {
