@@ -13,7 +13,6 @@ function Login() {
             <TextField id="outlined-basic" label="Password" variant="outlined" className='bg-white rounded-md'/>
             <Button variant="outlined" className='bg-blue-100 h-12'>Login</Button>
         </form>
-
     </div>
   )
 }
