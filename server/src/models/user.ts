@@ -1,17 +1,16 @@
 import { randomUUID } from "crypto";
 import mongoose from "mongoose";
-import { Embeddings } from "openai/resources";
 
 const chatSchema = new mongoose.Schema({
     id:{
         type:String,
         default: randomUUID()
     },
-    role:{
+    request: {
         type: String,
         required: true
     },
-    content: {
+    response: {
         type: String,
         required: true
     }

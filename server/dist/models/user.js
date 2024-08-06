@@ -10,11 +10,11 @@ const chatSchema = new mongoose_1.default.Schema({
         type: String,
         default: (0, crypto_1.randomUUID)()
     },
-    role: {
+    request: {
         type: String,
         required: true
     },
-    content: {
+    response: {
         type: String,
         required: true
     }
