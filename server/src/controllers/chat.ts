@@ -1,16 +1,17 @@
-import OpenAI from "openai";
+import { NextFunction, Request, Response } from "express";
+import run from "../config/gemini";
 
-const openai = new OpenAI();
 
-async function main() {
-    const stream = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: "Say this is a test" }],
-        stream: true,
-    });
-    for await (const chunk of stream) {
-        process.stdout.write(chunk.choices[0]?.delta?.content || "");
-    }
+export const chat = async(
+    req:Request, 
+    res:Response, 
+    next:NextFunction)=>{
+        try {
+            const inputData = req.body;
+            const question = inputData.message;
+            const result = await run(question)
+            res.status(201).json(result.response.text() || {message:"An error Occured Please try again"})
+        } catch (error) {
+            console.error(error, "An Error Occured")
+        }
 }
-
-main();

@@ -51,7 +51,6 @@ const signUpUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!createUser) {
             return res.status(500).json({ message: "An error Occured, please try again" });
         }
-        console.log(createUser);
         res.clearCookie(constants_1.COOKIE_NAME, {
             path: "/",
             domain: "localhost",

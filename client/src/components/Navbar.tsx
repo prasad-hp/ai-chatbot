@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button } from '@mui/material';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 function Navbar() {
     const [logged, setLogged] = useState(false)
     const navigate = useNavigate();
