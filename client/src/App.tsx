@@ -3,6 +3,7 @@ import Login from './pages/Login'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Landing from './pages/Landing'
+import Chat from './pages/Chat'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path='/login' element={<Login />}/>
         <Route path='/signup' element={<Signup />}/>
         <Route path='/' element={<Landing />}/>
+        <Route path='/chat' element={<Chat />}/>
       </Routes>
     </BrowserRouter>
     </>
