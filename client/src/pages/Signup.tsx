@@ -44,8 +44,6 @@ function Signup() {
         const errorMessage = error.response?.data?.message ?? 'An error occurred. Please try again later.';
         const detailedMessage = error.response?.data?.message?.issues?.[0]?.message;
         setStatusMessage(detailedMessage || errorMessage);
-      } finally {
-          setLoading(false)
       }
     }
   }

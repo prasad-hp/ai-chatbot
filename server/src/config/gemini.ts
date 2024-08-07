@@ -17,7 +17,7 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold} from "@google/gen
     responseMimeType: "text/plain",
   };
   
-  export default async function run(inputRequest:string) {
+  export default async function runGemini(inputRequest:string) {
     const chatSession = model.startChat({generationConfig});
   
     const result = await chatSession.sendMessage(inputRequest);

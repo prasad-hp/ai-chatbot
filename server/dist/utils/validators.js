@@ -29,9 +29,9 @@ exports.signupSchema = zod_1.default.object({
     firstName: zod_1.default.string(),
     lastName: zod_1.default.string().optional(),
     email: zod_1.default.string().email({ message: "Invalid email address" }),
-    password: (0, zod_1.string)().min(6, { message: "Must be 6 or more characters long" })
+    password: (0, zod_1.string)().min(6, { message: "Password must be 6 or more characters long" })
 });
 exports.loginSchema = zod_1.default.object({
     email: zod_1.default.string().email({ message: "Invalid email address" }),
-    password: (0, zod_1.string)().min(6, { message: "Must be 6 or more characters long" })
+    password: (0, zod_1.string)().min(6, { message: "Password must be 6 or more characters long" })
 });

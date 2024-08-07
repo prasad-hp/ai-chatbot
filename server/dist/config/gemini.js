@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = run;
+exports.default = runGemini;
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 const generative_ai_1 = require("@google/generative-ai");
@@ -25,7 +25,7 @@ const generationConfig = {
     maxOutputTokens: 8192,
     responseMimeType: "text/plain",
 };
-function run(inputRequest) {
+function runGemini(inputRequest) {
     return __awaiter(this, void 0, void 0, function* () {
         const chatSession = model.startChat({ generationConfig });
         const result = yield chatSession.sendMessage(inputRequest);

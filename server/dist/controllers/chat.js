@@ -12,13 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.chat = void 0;
+exports.receiveChat = exports.sendMessage = void 0;
 const gemini_1 = __importDefault(require("../config/gemini"));
 const user_1 = __importDefault(require("../models/user"));
-const chat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const sendMessage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const inputData = req.body;
-        const question = inputData.message;
+        const question = req.body.message;
         const userId = req.body.userId;
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
@@ -41,4 +40,23 @@ const chat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(500).json({ message: "An error occurred, please try again." });
     }
 });
-exports.chat = chat;
+exports.sendMessage = sendMessage;
+const receiveChat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.body.userId;
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
+        }
+        const user = yield user_1.default.findById(userId);
+        if (!user) {
+            return res.status(403).json({ message: "User Not found" });
+        }
+        const chats = user.chats;
+        res.status(200).json(chats);
+    }
+    catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).json({ message: "An error occurred, please try again." });
+    }
+});
+exports.receiveChat = receiveChat;
