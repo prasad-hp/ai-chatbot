@@ -4,6 +4,7 @@ import '@fontsource/roboto/500.css';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { backendUrl } from "../../config"
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
   const [firstName, setFirstName] = useState("")
@@ -13,6 +14,7 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [statusMessage, setStatusMessage] = useState("")
+  const navigate = useNavigate()
   useEffect(()=>{
 
   }, [])
@@ -23,6 +25,7 @@ function Signup() {
       setStatusMessage("Password Does not Match")
     }else{
       try {
+          setStatusMessage("")
           setLoading(true)
           const response = await axios({
             method:"post",
@@ -34,12 +37,13 @@ function Signup() {
               password: password
             }
           })
-          console.log(response.data)
+          console.log(response.data.message)
           setStatusMessage(response.data.message)
-      } catch (error) {
-          console.error(error)
-          console.log(error)
-          setStatusMessage("An error occurred. Please try again.");
+          navigate("/chat")
+      } catch (error:any) {
+        const errorMessage = error.response?.data?.message ?? 'An error occurred. Please try again later.';
+        const detailedMessage = error.response?.data?.message?.issues?.[0]?.message;
+        setStatusMessage(detailedMessage || errorMessage);
       } finally {
           setLoading(false)
       }
