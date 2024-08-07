@@ -17,6 +17,7 @@ function Signup() {
 
   }, [])
   async function signup(event:any) {
+    console.log(`${backendUrl}/user/signup`)
     event.preventDefault()
     if(password !== confirmPassword){
       setStatusMessage("Password Does not Match")
@@ -33,6 +34,7 @@ function Signup() {
               password: password
             }
           })
+          console.log(response.data)
           setStatusMessage(response.data.message)
       } catch (error) {
           console.error(error)
