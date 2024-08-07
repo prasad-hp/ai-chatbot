@@ -13,14 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = exports.signUpUser = exports.getAllUsers = void 0;
-const user_1 = __importDefault(require("../models/user"));
+const user_1 = require("../models/user");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const validators_1 = require("../utils/validators");
 const token_manager_1 = require("../utils/token-manager");
 const constants_1 = require("../utils/constants");
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield user_1.default.find();
+        const users = yield user_1.User.find();
         return res.status(200).json({ message: "OK", users });
     }
     catch (error) {
@@ -34,7 +34,7 @@ const signUpUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!signupData.success) {
             return res.status(400).json({ message: signupData.error });
         }
-        const checkEmail = yield user_1.default.findOne({
+        const checkEmail = yield user_1.User.findOne({
             email: signupData.data.email
         });
         if (checkEmail) {
@@ -42,7 +42,7 @@ const signUpUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         const salt = bcrypt_1.default.genSaltSync(10);
         const hashedPassword = yield bcrypt_1.default.hash(signupData.data.password, salt);
-        const createUser = yield user_1.default.create({
+        const createUser = yield user_1.User.create({
             firstName: signupData.data.firstName,
             lastName: signupData.data.lastName,
             email: signupData.data.email,
@@ -80,7 +80,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!loginData.success) {
             return res.status(400).json({ message: loginData.error });
         }
-        const user = yield user_1.default.findOne({
+        const user = yield user_1.User.findOne({
             email: loginData.data.email
         });
         if (!user) {

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../models/user"
+import { User } from "../models/user"
 import bcrypt from "bcrypt"
 import { loginSchema, signupSchema } from "../utils/validators";
 import { createToken } from "../utils/token-manager";

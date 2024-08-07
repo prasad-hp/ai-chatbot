@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-
-function SentMessage() {
-    const [inputText, setInputText] = useState("")
+interface SentMessageProps {
+  sentChat: string
+}
+function SentMessage({sentChat}:SentMessageProps) {
   return (
-    <div className='flex items-center justify-end rounded-full bg-slate-100 font-serif w-auto px-2 py-1 '>
-        <p>
-            gfdgdfgdfg
+    <div className="bg-blue-500 text-white p-3 rounded-lg inline-block self-end mb-2">
+        <p className='text-right'>
+            {sentChat}
         </p>
     </div>
   )

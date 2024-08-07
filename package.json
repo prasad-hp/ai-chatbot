@@ -13,6 +13,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "react-router-dom": "^6.25.1"
+    "react-router-dom": "^6.25.1",
+    "server": "file:server"
   }
 }

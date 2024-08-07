@@ -1,13 +1,19 @@
-import React from 'react'
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
-function ReceivedMessage() {
-  return (
-    <div className='flex items-center justify-end rounded-full bg-slate-100 font-serif w-auto px-2 py-1 '>
-        <p>
-            gfdgdfgdfg
-        </p>
-    </div>
-  )
+interface ReceivedMessageProps {
+  receivedChat: string;
 }
 
-export default ReceivedMessage
+const ReceivedMessage: React.FC<ReceivedMessageProps> = ({ receivedChat }) => {
+  return (
+    <div className="bg-gray-200 text-black p-3 rounded-lg max-w-[80%] self-start mb-2">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {receivedChat}
+      </ReactMarkdown>
+    </div>
+  );
+};
+
+export default ReceivedMessage;

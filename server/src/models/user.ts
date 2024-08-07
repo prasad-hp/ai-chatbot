@@ -16,7 +16,6 @@ const chatSchema = new mongoose.Schema({
     }
 })
 const userSchema = new mongoose.Schema({
-
     firstName:{
         type: String,
         required: true
@@ -36,5 +35,12 @@ const userSchema = new mongoose.Schema({
     },
     chats: [chatSchema]
 })
-const User = mongoose.model("User", userSchema)
-export default User;
+const guestSchema = new mongoose.Schema({
+    firstName:{
+        type: String,
+        required: true
+    },
+    chats: [chatSchema]
+})
+export const User = mongoose.model("User", userSchema)
+export const Guest = mongoose.model("Guest", guestSchema)

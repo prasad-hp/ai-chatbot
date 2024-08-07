@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.receiveChat = exports.sendMessage = void 0;
 const gemini_1 = __importDefault(require("../config/gemini"));
-const user_1 = __importDefault(require("../models/user"));
+const user_1 = require("../models/user");
 const sendMessage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const question = req.body.message;
@@ -22,12 +22,20 @@ const sendMessage = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
         }
-        const user = yield user_1.default.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        const user = yield user_1.User.findById(userId);
+        const guest = yield user_1.Guest.findById(userId);
+        if (!user || !guest) {
+            return res.status(404).json({ message: "User/Guest not found" });
         }
         const result = yield (0, gemini_1.default)(question);
         const responseText = result.response.text();
+        if (!user) {
+            guest.chats.push({
+                request: question,
+                response: responseText
+            });
+            yield guest.save();
+        }
         user.chats.push({
             request: question,
             response: responseText
@@ -43,15 +51,16 @@ const sendMessage = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 exports.sendMessage = sendMessage;
 const receiveChat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userId = req.body.userId;
+        const userId = req.query.userId;
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
         }
-        const user = yield user_1.default.findById(userId);
-        if (!user) {
+        const user = yield user_1.User.findById(userId);
+        const guest = yield user_1.Guest.findById(userId);
+        if (!user || !guest) {
             return res.status(403).json({ message: "User Not found" });
         }
-        const chats = user.chats;
+        const chats = user.chats || guest.chats || [];
         res.status(200).json(chats);
     }
     catch (error) {
