@@ -1,1 +1,1 @@
-export const backendUrl:string = "http://localhost:3000/api/v1"
+export const backendUrl:string = "https://ai-chat.linkpc.net/api/v1"

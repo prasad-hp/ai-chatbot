@@ -16,11 +16,13 @@
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.5",
     "@popperjs/core": "^2.11.8",
+    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.3",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.26.0",
     "remark-gfm": "^4.0.0"
   },
   "devDependencies": {

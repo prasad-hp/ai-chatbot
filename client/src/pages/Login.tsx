@@ -14,7 +14,6 @@ function Login() {
   const navigate = useNavigate()
 
   async function login(event:any) {
-  console.log(`${backendUrl}/user/signup`)
   event.preventDefault()
     try {
         setStatusMessage("")

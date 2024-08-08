@@ -4,14 +4,13 @@ import { connectDataBase } from "./db/connection";
 import mainMouter from "./routes";
 import cors from "cors"
 config() 
-const PORT = 3000;
+const PORT = 5050;
 const app = express();
-app.use(cors())
+app.use(cors({origin: ["https://ai-chatbot-byprasad.netlify.app/",
+        "http://localhost:5173/"
+    ]}
+))
 app.use(express.json());
-
-app.get("/", (req, res)=>{
-    res.send("hello")
-})
 
 app.use("/api/v1/", mainMouter);
 
