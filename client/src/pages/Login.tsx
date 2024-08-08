@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import '@fontsource/roboto/500.css';
 import Navbar from '../components/Navbar';
@@ -39,7 +39,9 @@ function Login() {
         setLoading(false)
     }
   }
-
+  useEffect(()=>{
+    setLoading(false)
+  }, [email, password, statusMessage])
   return (
     <div>
       <Navbar />

@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
@@ -33,6 +33,9 @@ function Guestlogin() {
             setStatusMessage(detailedMessage || errorMessage);
         }
     }
+    useEffect(()=>{
+        setLoading(false)
+      }, [firstName, statusMessage])
   return (
     <div className='h-screen w-screen'>
         <Navbar />

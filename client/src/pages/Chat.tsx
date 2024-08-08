@@ -14,6 +14,7 @@ function Chat() {
   const [message, setMessage] = useState("");
   const [newResponse, setNewResponse] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [isLogged, setIslogged] = useState(false)
 
   async function sendMessage(event: React.FormEvent) {
     event.preventDefault();
@@ -60,6 +61,9 @@ function Chat() {
 
   useEffect(() => {
     getChat();
+    if(localStorage.getItem("token")){
+      setIslogged(true)
+    }
   }, []);
 
   useEffect(() => {
@@ -77,7 +81,7 @@ function Chat() {
 
   return (
     <div className='w-full h-screen'>
-      <Navbar />
+      <Navbar loggedState={isLogged}/>
       <div ref={chatContainerRef} className='flex flex-col items-center justify-center h-[85%]'>
         <div className='w-9/12 relative overflow-y-scroll no-scrollbar top-4 mt-5'>
           {chatList}

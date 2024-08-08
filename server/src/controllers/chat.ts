@@ -6,12 +6,12 @@ export const sendMessage = async (req: Request, res: Response) => {
     try {
         const question = req.body.message;
         const userId = req.id as string;
-        
+        console.log(userId)
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
         }
 
-        // Check if the ID belongs to a User or Guest
+
         const user = await User.findById(userId);
         const guest = await Guest.findById(userId);
 

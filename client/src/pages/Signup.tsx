@@ -16,8 +16,8 @@ function Signup() {
   const [statusMessage, setStatusMessage] = useState("")
   const navigate = useNavigate()
   useEffect(()=>{
-
-  }, [])
+    setLoading(false)
+  }, [email, password, statusMessage])
   async function signup(event:any) {
     console.log(`${backendUrl}/user/signup`)
     event.preventDefault()

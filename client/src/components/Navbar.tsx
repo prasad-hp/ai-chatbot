@@ -1,9 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-function Navbar() {
+
+function Navbar(props:any) {
     const [logged, setLogged] = useState(false)
     const navigate = useNavigate();
+    useEffect(()=>{
+        setLogged(props.loggedState)
+    },[props, logged])
+    function logOut(){
+        setLogged(false)
+        localStorage.removeItem("token")
+        navigate("/")
+    }
   return (
     <div className='flex justify-between w-full p-3 fixed bg-white'>
         <div className='flex items-center space-x-1 hover:cursor-pointer' onClick={()=>navigate("/")}>
@@ -19,7 +28,7 @@ function Navbar() {
                 </div>
             </div>
             <div className={`${ logged ? "inline-block" : "hidden" }`}>
-                <Button variant="contained"  onClick={()=>setLogged(!logged)}> Logout </Button>
+                <Button variant="contained" onClick={()=>logOut()}> Logout </Button>
             </div>
         </div>
     </div>

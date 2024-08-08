@@ -19,9 +19,9 @@ function Landing() {
           <img src="../chatbot.svg" alt="Chat" className="mx-auto mb-6 w-64 h-64 object-contain" />
           <p
             className="bg-blue-600 text-white py-2 px-4 rounded cursor-pointer hover:bg-blue-700"
-            onClick={() => navigate("/chat")}
+            onClick={() => navigate("/guest")}
           >
-            Start Chatting
+            Login as a Guest and Start Chatting
           </p>
         </div>
       </main>

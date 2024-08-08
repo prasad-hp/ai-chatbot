@@ -19,32 +19,37 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const question = req.body.message;
         const userId = req.id;
+        console.log(userId);
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
         }
         const user = yield user_1.User.findById(userId);
         const guest = yield user_1.Guest.findById(userId);
-        if (!user || !guest) {
-            return res.status(404).json({ message: "User/Guest not found" });
+        if (!user && !guest) {
+            return res.status(404).json({ message: "User or Guest not found" });
         }
+        // Run Gemini to get response
         const result = yield (0, gemini_1.default)(question);
         const responseText = result.response.text();
-        if (!user) {
+        // Update the appropriate chat collection
+        if (user) {
+            user.chats.push({
+                request: question,
+                response: responseText
+            });
+            yield user.save();
+        }
+        if (guest) {
             guest.chats.push({
                 request: question,
                 response: responseText
             });
             yield guest.save();
         }
-        user.chats.push({
-            request: question,
-            response: responseText
-        });
-        yield user.save();
         res.status(201).json({ response: responseText });
     }
     catch (error) {
-        console.error("An error occurred:", error);
+        console.error("An error occurred while sending message:", error);
         res.status(500).json({ message: "An error occurred, please try again." });
     }
 });
@@ -55,16 +60,18 @@ const receiveChat = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
         }
+        // Check if the ID belongs to a User or Guest
         const user = yield user_1.User.findById(userId);
         const guest = yield user_1.Guest.findById(userId);
-        if (!user || !guest) {
-            return res.status(403).json({ message: "User Not found" });
+        if (!user && !guest) {
+            return res.status(404).json({ message: "User or Guest not found" });
         }
-        const chats = user.chats || guest.chats || [];
+        // Return the chats for User or Guest
+        const chats = (user === null || user === void 0 ? void 0 : user.chats) || (guest === null || guest === void 0 ? void 0 : guest.chats) || [];
         res.status(200).json(chats);
     }
     catch (error) {
-        console.error("An error occurred:", error);
+        console.error("An error occurred while receiving chat:", error);
         res.status(500).json({ message: "An error occurred, please try again." });
     }
 });
