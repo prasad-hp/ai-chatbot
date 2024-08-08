@@ -22,7 +22,6 @@ function Navbar(props:any) {
         <div>
             <div className= {`${ logged ? "hidden" : "inline-block"} `}>
                 <div className='flex space-x-2'>
-                    <Button variant="contained" color='success' onClick={()=>navigate("/guest")}>Guest Login</Button>
                     <Button variant="contained" color='success' onClick={()=>navigate("/login")}>Login</Button>
                     <Button variant="contained" color='secondary' onClick={()=>navigate("/signup")}>Signup</Button>
                 </div>

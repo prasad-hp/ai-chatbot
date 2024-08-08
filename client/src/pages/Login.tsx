@@ -27,7 +27,6 @@ function Login() {
             password: password
           }
         })
-        console.log(response.data.message)
         localStorage.setItem("token", response.data.token)
         setStatusMessage(response.data.message)
         navigate("/chat")
@@ -46,7 +45,7 @@ function Login() {
     <div>
       <Navbar />
       <div className='w-screen h-screen flex items-center justify-center'>
-          <form onSubmit={login} className='p-3 py-5 flex flex-col w-1/4 space-y-3 text-center bg-gray-300 rounded-lg border-gray-400 border-2 shadow-lg'>
+          <form onSubmit={login} className='p-3 py-5 flex flex-col md:w-1/4 w-[90%] sm:w-[85%] min-w-96 max-w-lg space-y-3 text-center bg-gray-300 rounded-lg border-gray-400 border-2 shadow-lg'>
               <Typography variant="h3" gutterBottom>
                   Login
               </Typography>

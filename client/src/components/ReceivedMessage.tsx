@@ -8,7 +8,7 @@ interface ReceivedMessageProps {
 
 const ReceivedMessage: React.FC<ReceivedMessageProps> = ({ receivedChat }) => {
   return (
-    <div className="bg-gray-200 text-black p-3 rounded-lg max-w-[80%] self-start mb-2">
+    <div className="bg-gray-200 text-black p-3 rounded-lg md:max-w-[80%] max-w-[95%] self-start mb-2">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
         {receivedChat}
       </ReactMarkdown>

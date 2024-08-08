@@ -40,12 +40,12 @@ function Guestlogin() {
     <div className='h-screen w-screen'>
         <Navbar />
         <div className='flex flex-col items-center justify-center w-full h-full space-y-2'>
-            <h2 className='text-gray-500 text-center text-4xl font-sans font-semibold'>Welcome to Chatbot</h2>
-            <form action="" onSubmit={guestLogin} className='text-center'>
-                <TextField id="outlined-basic" label="Enter Your Name" type='text' value={firstName} onChange={(e)=>setFirstName(e.target.value)} variant="outlined" className='bg-white rounded-md'/>
+            <h2 className='text-gray-500 text-center text-4xl font-sans font-semibold  pb-5'>Welcome to Chatbot</h2>
+            <form action="" onSubmit={guestLogin} className='text-center md:w-1/5 min-w-96'>
+                <TextField id="outlined-basic" label="Enter Your Name" type='text' value={firstName} onChange={(e)=>setFirstName(e.target.value)} variant="outlined" className='bg-white rounded-md w-full'/>
                 <p>{statusMessage}</p>
-                <Button variant="outlined" type='submit' className='bg-blue-100 h-12 my-2' disabled={loading}>
-                    {loading ? 'Logging In...' : 'Login'}
+                <Button variant="outlined" type='submit' className='bg-blue-100 h-12 my-2 w-1/2' disabled={loading}>
+                    {loading ? 'Logging In...' : 'Guest Login'}
                 </Button>
             </form>
         </div>
