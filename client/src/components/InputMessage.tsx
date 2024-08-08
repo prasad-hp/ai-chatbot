@@ -1,7 +1,6 @@
-import { Button, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
-import React from 'react'
 
 function InputMessage() {
   return (
