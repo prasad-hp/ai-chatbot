@@ -16,9 +16,11 @@ exports.loginUser = exports.signUpUser = exports.getAllUsers = void 0;
 const user_1 = require("../models/user");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const validators_1 = require("../utils/validators");
-const token_manager_1 = require("../utils/token-manager");
-const constants_1 = require("../utils/constants");
-const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const jsonwebtoken_1 = require("jsonwebtoken");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+const JWT_TOKEN = process.env.JWT_TOKEN;
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield user_1.User.find();
         return res.status(200).json({ message: "OK", users });
@@ -51,23 +53,11 @@ const signUpUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!createUser) {
             return res.status(500).json({ message: "An error Occured, please try again" });
         }
-        res.clearCookie(constants_1.COOKIE_NAME, {
-            path: "/",
-            domain: "localhost",
-            httpOnly: true,
-            signed: true
+        const token = (0, jsonwebtoken_1.sign)(createUser.id, JWT_TOKEN);
+        res.status(201).json({
+            message: "User Created Successfully",
+            token: token
         });
-        const token = (0, token_manager_1.createToken)(createUser.id, createUser.email, "7d");
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 7);
-        res.cookie(constants_1.COOKIE_NAME, token, {
-            path: "/",
-            domain: "localhost",
-            expires,
-            httpOnly: true,
-            signed: true
-        });
-        res.status(201).json({ message: "User Created Successfully" });
     }
     catch (error) {
         console.error(error, "An Error Occured");
@@ -90,23 +80,11 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!checkPassword) {
             return res.status(400).json({ message: "Enter valid Password" });
         }
-        res.clearCookie(constants_1.COOKIE_NAME, {
-            path: "/",
-            domain: "localhost",
-            httpOnly: true,
-            signed: true
+        const token = (0, jsonwebtoken_1.sign)(user.id, JWT_TOKEN);
+        res.status(200).json({
+            message: "Logged In",
+            token: token
         });
-        const token = (0, token_manager_1.createToken)(user.id, user.email, "7d");
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 7);
-        res.cookie(constants_1.COOKIE_NAME, token, {
-            path: "/",
-            domain: "localhost",
-            expires,
-            httpOnly: true,
-            signed: true
-        });
-        res.status(200).json({ message: "Logged In" });
     }
     catch (error) {
         console.error(error, "An Error Occured");

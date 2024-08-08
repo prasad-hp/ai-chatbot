@@ -2,17 +2,13 @@ import express from "express";
 import { config } from "dotenv";
 import { connectDataBase } from "./db/connection";
 import mainMouter from "./routes";
-import morgan from "morgan";
-import cookieParser from "cookie-parser"
-import { Request } from "openai/_shims/auto/types";
 import cors from "cors"
-config()
+config() 
 const PORT = 3000;
 const app = express();
 app.use(cors())
 app.use(express.json());
-app.use(morgan("dev"));
-app.use(cookieParser(process.env.COOKIE_SECRET))
+
 app.get("/", (req, res)=>{
     res.send("hello")
 })

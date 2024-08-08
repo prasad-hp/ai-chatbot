@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import { guestSchema } from "../utils/validators";
 import { Guest } from "../models/user";
+import { sign } from "jsonwebtoken";
+import { config } from "dotenv";
+config()
 
-
+const JWT_TOKEN = process.env.JWT_TOKEN as string;
 export const guestUser = async(
     req: Request,
     res: Response
@@ -19,9 +22,10 @@ export const guestUser = async(
         if(!createGuest){
             return res.status(500).json({message:"Please try again"})
         }
+        const token = sign(createGuest.id, JWT_TOKEN)
         res.status(201).json({
             message: "User Created Successfully",
-            userId: createGuest.id
+            token: token
         })
     } catch (error) {
         console.error(error, "An Error Occured")

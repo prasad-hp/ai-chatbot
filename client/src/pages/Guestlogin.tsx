@@ -25,6 +25,7 @@ function Guestlogin() {
             })
             console.log(response.data.message)
             setStatusMessage(response.data.message)
+            localStorage.setItem("token", response.data.token)
             navigate("/chat")
         } catch (error:any) {
             const errorMessage = error.response?.data?.message ?? 'An error occurred. Please try again later.';

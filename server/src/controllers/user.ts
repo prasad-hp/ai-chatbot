@@ -2,13 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import { User } from "../models/user"
 import bcrypt from "bcrypt"
 import { loginSchema, signupSchema } from "../utils/validators";
-import { createToken } from "../utils/token-manager";
-import { COOKIE_NAME } from "../utils/constants";
-
+import { sign } from "jsonwebtoken";
+import { config } from "dotenv";
+config()
+const JWT_TOKEN = process.env.JWT_TOKEN as string;
 export const getAllUsers = async (
     req: Request,
-    res: Response,
-    next: NextFunction
+    res: Response
     )=>{
     try {
         const users = await User.find();
@@ -43,27 +43,11 @@ export const signUpUser = async (
         if(!createUser){
             return res.status(500).json({message:"An error Occured, please try again"})
         }
-        res.clearCookie(COOKIE_NAME, {
-            path: "/",
-            domain: "localhost",
-            httpOnly: true,
-            signed: true
+        const token = sign(createUser.id, JWT_TOKEN)
+        res.status(201).json({
+            message: "User Created Successfully",
+            token: token
         })
-        const token = createToken(createUser.id, createUser.email, "7d")
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 7)
-        res.cookie(
-            COOKIE_NAME, 
-            token, 
-            {
-                path: "/",
-                domain: "localhost",
-                expires,
-                httpOnly: true,
-                signed: true
-            }
-        )
-        res.status(201).json({message: "User Created Successfully"})
     } catch (error) {
         console.error(error, "An Error Occured")
     }
@@ -88,27 +72,11 @@ export const loginUser = async(
         if(!checkPassword){
             return res.status(400).json({message:"Enter valid Password"})
         }
-        res.clearCookie(COOKIE_NAME, {
-            path: "/",
-            domain: "localhost",
-            httpOnly: true,
-            signed: true
+        const token = sign(user.id, JWT_TOKEN)
+        res.status(200).json({
+            message:"Logged In",
+            token:token
         })
-        const token = createToken(user.id, user.email, "7d")
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 7)
-        res.cookie(
-            COOKIE_NAME, 
-            token, 
-            {
-                path: "/",
-                domain: "localhost",
-                expires,
-                httpOnly: true,
-                signed: true
-            }
-        )
-        res.status(200).json({message:"Logged In"})
     } catch (error) {
         console.error(error, "An Error Occured")
     }

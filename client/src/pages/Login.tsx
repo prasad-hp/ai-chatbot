@@ -28,6 +28,7 @@ function Login() {
           }
         })
         console.log(response.data.message)
+        localStorage.setItem("token", response.data.token)
         setStatusMessage(response.data.message)
         navigate("/chat")
     } catch (error:any) {

@@ -20,9 +20,15 @@ function Chat() {
     setNewResponse(null);
     try {
       setStatusMessage("Loading Please Wait");
-      const response = await axios.post(`${backendUrl}/chat/send`, {
-        userId: "66b2341f3c3bcce51051f8d5",
-        message: message
+      const response = await axios({
+        method:"post",
+        url:`${backendUrl}/chat/send`,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        data:{
+          message: message
+        }
       });
       setMessage("");
       setNewResponse(response.data.response);
@@ -37,9 +43,11 @@ function Chat() {
 
   async function getChat() {
     try {
-      const response = await axios.get(`${backendUrl}/chat/receive`, {
-        params: {
-          userId: "66b2341f3c3bcce51051f8d5"
+      const response = await axios({
+        method: "get",
+        url: `${backendUrl}/chat/receive`,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
         }
       });
       setChats(response.data);

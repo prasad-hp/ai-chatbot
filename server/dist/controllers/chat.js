@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.receiveChat = exports.sendMessage = void 0;
 const gemini_1 = __importDefault(require("../config/gemini"));
 const user_1 = require("../models/user");
-const sendMessage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const question = req.body.message;
-        const userId = req.body.userId;
+        const userId = req.id;
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
         }
@@ -51,7 +51,7 @@ const sendMessage = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 exports.sendMessage = sendMessage;
 const receiveChat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userId = req.query.userId;
+        const userId = req.id;
         if (!userId) {
             return res.status(400).json({ message: "userId is required" });
         }

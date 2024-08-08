@@ -12,6 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.guestUser = void 0;
 const validators_1 = require("../utils/validators");
 const user_1 = require("../models/user");
+const jsonwebtoken_1 = require("jsonwebtoken");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+const JWT_TOKEN = process.env.JWT_TOKEN;
 const guestUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const guestName = req.body.name;
     const parsedData = validators_1.guestSchema.safeParse(guestName);
@@ -25,9 +29,10 @@ const guestUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!createGuest) {
             return res.status(500).json({ message: "Please try again" });
         }
+        const token = (0, jsonwebtoken_1.sign)(createGuest.id, JWT_TOKEN);
         res.status(201).json({
             message: "User Created Successfully",
-            userId: createGuest.id
+            token: token
         });
     }
     catch (error) {
