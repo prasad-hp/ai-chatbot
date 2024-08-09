@@ -6,8 +6,8 @@ import cors from "cors"
 config() 
 const PORT = 5050;
 const app = express();
-app.use(cors({origin: ["https://ai-chatbot-byprasad.netlify.app/",
-        "http://localhost:5173/"
+app.use(cors({origin: ["https://ai-chatbot-byprasad.netlify.app",
+        "http://localhost:5173"
     ]}
 ))
 app.use(express.json());
